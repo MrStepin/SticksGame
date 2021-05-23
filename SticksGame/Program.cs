@@ -11,7 +11,7 @@ namespace SticksGame
         static int EnterSticksCount()
         {
             Console.WriteLine("Введите начальное количество палочек от 10 до 99:");
-            int sticksCount = Convert.ToInt16(Console.ReadLine());
+            int sticksCount = Convert.ToInt32(Console.ReadLine());
             return sticksCount;
         }
 
@@ -23,8 +23,17 @@ namespace SticksGame
         static void PlayerStep(int sticksCount)
         {
             Console.WriteLine("Сколько палочек ты берешь(от 1 до 3):");
-            sticksCount -= Convert.ToInt16(Console.ReadLine());
-            PcStep(sticksCount);
+            if (Convert.ToInt32(Console.ReadLine()) < 4 && Convert.ToInt32(Console.ReadLine()) > 0)
+            {
+                sticksCount -= Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine($"Осталось {sticksCount} палочек.");
+                PcStep(sticksCount);
+            }
+            else
+            {
+                Console.WriteLine("Столько нельзя брать. Возьми 1(ОДНУ) 2(ДВЕ) или 3(ТРИ).");
+                PlayerStep(sticksCount);
+            }
         }
 
         static void PcStep(int sticksCount)
@@ -36,9 +45,9 @@ namespace SticksGame
                 Console.WriteLine("Ты победил!");
             }
 
-            if (sticksCount != 5 && sticksCount < 9 && sticksCount > 5)
+            if (sticksCount > 5)
             {
-                sticksCount = 5;
+                sticksCount = sticksCount - ((sticksCount - 1) % 4);
                 Console.WriteLine($"Я взял {incomeCount - sticksCount}. Осталось {sticksCount} палочек.");
                 PlayerStep(sticksCount);
             }
@@ -47,13 +56,6 @@ namespace SticksGame
             {
                 sticksCount = 1;
                 Console.WriteLine("Ты проиграл!");
-            }
-
-            if (sticksCount > 9)
-            {
-                sticksCount -= 3;
-                Console.WriteLine($"Я взял {incomeCount - sticksCount}. Осталось {sticksCount} палочек.");
-                PlayerStep(sticksCount);
             }
         }
 
